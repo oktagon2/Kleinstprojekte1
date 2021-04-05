@@ -1,0 +1,58 @@
+﻿<Window x:Class="ScanRenamer2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScanRenamer2"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <TabControl>
+        <TabItem Header="Scanned Files" IsSelected="{Binding IsTabItemScannedFilesSelected}">
+            <DataGrid ItemsSource="{Binding ScannedFiles}" IsReadOnly="True" IsSynchronizedWithCurrentItem="True">
+                <DataGrid.InputBindings>
+                    <MouseBinding
+                    MouseAction="LeftDoubleClick" 
+                    Command="{Binding ScannedFileDoubleClickCommand}"
+                    CommandParameter="{Binding ScannedFiles/}" />
+                </DataGrid.InputBindings>
+            </DataGrid>
+        </TabItem>
+        <TabItem Header="Name it!" IsSelected="{Binding IsTabItemNameItSelected}">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top">
+                    <Label>Datum:</Label>
+                    <DatePicker SelectedDate="{Binding Datum}" />
+                    <Label>Suche nach:</Label>
+                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Return" Command="{Binding SearchCommand}" 
+                                        CommandParameter="{Binding Text}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Label>Treffer:</Label>
+                </StackPanel>
+                    <DataGrid ItemsSource="{Binding MatchedFiles}" IsReadOnly="True" IsSynchronizedWithCurrentItem="True">
+                        <DataGrid.InputBindings>
+                            <MouseBinding
+                        MouseAction="LeftDoubleClick" 
+                        Command="{Binding MatchedFileDoubleClickCommand}"
+                        CommandParameter="{Binding MatchedFiles/}" />
+                        </DataGrid.InputBindings>
+                    </DataGrid>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="Zusammenfassung" IsSelected="{Binding IsTabItemZusammenfassungSelected}">
+            <StackPanel>
+                <Label>Aus dem Verzeichnis:</Label>
+                <TextBlock Text="{Binding SourceDirectory}" />
+                <Label>Wird die Datei:</Label>
+                <TextBlock Text="{Binding SourceFilename}" />
+                <Label>In folgendem Verzeichnis:</Label>
+                <TextBox Text="{Binding DestinationDirectory}" />
+                <Label>Mit folgendem Dateinamen abgespeichert:</Label>
+                <TextBox Text="{Binding DestinationFilename}" />
+                <Button Margin="20" Width="100" Command="{Binding MoveFile}">OK</Button>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</Window>
